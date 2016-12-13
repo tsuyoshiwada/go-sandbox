@@ -8,10 +8,13 @@
   <body>
     <ul id="messages"></ul>
     WebSocket &amp; Golangのチャットサンプル
+
     <form id="chatbox">
+      {{.UserData.name}}:<br>
       <textarea id="text" name="" cols="30" rows="10"></textarea>
       <input type="submit" value="送信">
     </form>
+
     <script>
       const $ = selector => document.querySelector(selector);
       const $chatbox = $("#chatbox");
@@ -25,7 +28,8 @@
 
       socket.onmessage = e => {
         const $li = document.createElement("li");
-        $li.textContent = e.data;
+        const msg = JSON.parse(e.data);
+        $li.innerHTML = `<strong>${msg.Name}</strong>: ${msg.Message}`;
         $messages.appendChild($li);
       };
 
@@ -35,7 +39,7 @@
 
         const value = $text.value.trim();
         if (value === "") return;
-        socket.send(value);
+        socket.send(JSON.stringify({ "Message": value }));
         $text.value = "";
       }, false);
     </script>
