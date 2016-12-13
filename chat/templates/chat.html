@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>チャット</title>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    WebSocket &amp; Golangのチャットサンプル
+    <form id="chatbox">
+      <textarea id="text" name="" cols="30" rows="10"></textarea>
+      <input type="submit" value="送信">
+    </form>
+    <script>
+      const $ = selector => document.querySelector(selector);
+      const $chatbox = $("#chatbox");
+      const $text = $("#text");
+      const $messages = $("#messages");
+      const socket = new WebSocket("ws://{{.Host}}/room");
+
+      socket.onclose = () => {
+        console.log("接続が終了しました");
+      };
+
+      socket.onmessage = e => {
+        const $li = document.createElement("li");
+        $li.textContent = e.data;
+        $messages.appendChild($li);
+      };
+
+      $chatbox.addEventListener("submit", e => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const value = $text.value.trim();
+        if (value === "") return;
+        socket.send(value);
+        $text.value = "";
+      }, false);
+    </script>
+  </body>
+</html>
