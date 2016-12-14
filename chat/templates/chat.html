@@ -4,16 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>チャット</title>
+    <link rel="stylesheet" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <style>
+      #messages {
+        list-style: none;
+      }
+
+      #messages li {
+        margin-bottom: 2px;
+      }
+
+      #messages li img {
+        margin-right: 10px;
+      }
+    </style>
   </head>
   <body>
-    <ul id="messages"></ul>
-    WebSocket &amp; Golangのチャットサンプル
+    <div class="container">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <ul id="messages"></ul>
+        </div>
+      </div>
 
-    <form id="chatbox">
-      {{.UserData.name}}:<br>
-      <textarea id="text" name="" cols="30" rows="10"></textarea>
-      <input type="submit" value="送信">
-    </form>
+      <form id="chatbox" role="form">
+        <div class="form-group">
+          <label for="text">{{.UserData.name}} からメッセージを送信</label>
+          または<a href="/logout">サインアウト</a>
+          <textarea id="text" class="form-control"></textarea>
+        </div>
+        <input class="btn btn-default" type="submit" value="送信">
+      </form>
+    </div>
 
     <script>
       const $ = selector => document.querySelector(selector);
@@ -29,7 +51,14 @@
       socket.onmessage = e => {
         const $li = document.createElement("li");
         const msg = JSON.parse(e.data);
-        $li.innerHTML = `<strong>${msg.Name}</strong>: ${msg.Message}`;
+        $li.innerHTML = `
+          <img
+            src="${msg.AvatarURL}"
+            style="width: 50px; vertical-align: middle;"
+            title="${msg.Name}"
+          >
+          <span>${msg.Message}</span>
+        `;
         $messages.appendChild($li);
       };
 
