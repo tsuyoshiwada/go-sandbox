@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>アップロード - チャット</title>
+    <link rel="stylesheet" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-header">
+        <h1>画像のアップロード</h1>
+      </div>
+
+      <form action="/uploader" role="form" enctype="multipart/form-data" method="post">
+        <input type="hidden" name="userid" value="{{.UserData.userid}}">
+        <div class="form-group">
+          <label for="message">ファイルを選択</label>
+          <input type="file" name="avatarFile">
+        </div>
+        <input class="btn btn-default" type="submit" value="アップロード">
+      </form>
+    </div>
+  </body>
+</html>
